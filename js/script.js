@@ -1,12 +1,12 @@
 (function () {
     var students = [{
-            name: 'Liudmyla',
-            lastName: 'Bashta',
-            img: 'https://www.plagiarismtoday.com/wp-content/uploads/2016/07/nyancat-385-sized.jpg',
-            coverImg: 'http://i2.kym-cdn.com/photos/images/facebook/000/243/865/8f3.jpg',
-            email: 'liudmyla.bashta@gmail.com',
-            skills: ['Javascript', 'HTML', 'CSS']
-        },
+        name: 'Liudmyla',
+        lastName: 'Bashta',
+        img: 'https://www.plagiarismtoday.com/wp-content/uploads/2016/07/nyancat-385-sized.jpg',
+        coverImg: 'http://i2.kym-cdn.com/photos/images/facebook/000/243/865/8f3.jpg',
+        email: 'liudmyla.bashta@gmail.com',
+        skills: ['Javascript', 'HTML', 'CSS']
+    },
         {
             name: 'Roman',
             lastName: 'Chapkailo',
@@ -168,17 +168,17 @@
     console.log(studentsProps);
 
     var newTable = document.createElement('TABLE');
-        newTable.classList.add('table');
-        newTable.classList.add('table-hover');
+    newTable.classList.add('table');
+    newTable.classList.add('table-hover');
     var newTableHead = document.createElement('THEAD');
-        newTable.appendChild(newTableHead);
+    newTable.appendChild(newTableHead);
     var newTrTitle = document.createElement('TR');
     for (var j = 0; j < studentsProps.length; j++) {
         var newTh = document.createElement('TH');
         newTh.innerText = studentsProps[j].toUpperCase();
         newTrTitle.appendChild(newTh);
     }
-        newTableHead.appendChild(newTrTitle);
+    newTableHead.appendChild(newTrTitle);
     document.getElementById('container').appendChild(newTable);
 
     function renderBody() {
@@ -224,16 +224,32 @@
     renderBody();
     var index = -1;
     var indexTwo = -1;
+    var sorted = false;
     newTable.addEventListener('click', function (e) {
 
         var element = e.target.parentNode.childNodes[1].innerText;
         var sortBy = e.target.innerText;
-        function compare(a,b) {
-            // if (a[sortBy.toLowerCase()] < b[sortBy.toLowerCase()])
-            //     return -1;
-            // if (a[sortBy.toLowerCase()] < b[sortBy.toLowerCase()])
-            //     return 1;
-            // return 0;
+        function compareAZ(a,b) {
+            sorted = true;
+            if(sortBy === 'LASTNAME'){
+                var nameA=a.lastName.toLowerCase(), nameB=b.lastName.toLowerCase();
+                if (nameA < nameB) //sort string ascending
+                    return -1;
+                if (nameA > nameB)
+                    return 1;
+                return 0; //default return value (no sorting)
+
+            }
+            var nameA=a[sortBy.toLowerCase()].toLowerCase(), nameB=b[sortBy.toLowerCase()].toLowerCase();
+            if (nameA < nameB) //sort string ascending
+                return -1;
+            if (nameA > nameB)
+                return 1;
+            return 0; //default return value (no sorting)
+
+        }
+        function compareZA(b,a) {
+            sorted = false;
             if(sortBy === 'LASTNAME'){
                 var nameA=a.lastName.toLowerCase(), nameB=b.lastName.toLowerCase();
                 if (nameA < nameB) //sort string ascending
@@ -252,12 +268,21 @@
 
         }
         if(e.target && element === 'LASTNAME' ){
-            console.log('dinay');
-            students.sort(compare);
+            if(!sorted){
+                students.sort(compareAZ);
+                deleteBody();
+                renderBody();
+
+
+            } else {
+                students.sort(compareZA);
+                deleteBody();
+                renderBody();
+            }
             console.log('this'+sortBy);
             console.log(students);
-            deleteBody();
-            renderBody();
+
+
         }
 
 
@@ -290,7 +315,6 @@
 
         };
     });
-
 
     var submitForm = document.createElement("form");
 
@@ -371,7 +395,7 @@
         function nameValidation() {
             var txt = "";
             if (formElements[0].validity.valueMissing) {
-                txt = formElements[0].placeholder + ' missinig';
+                txt = formElements[0].placeholder + ' missing';
                 alert(txt);
                 return false;
             } else {
@@ -381,7 +405,7 @@
         function lastNameValidation() {
             var txt = "";
             if (formElements[1].validity.valueMissing) {
-                txt = formElements[1].placeholder + ' missinig';
+                txt = formElements[1].placeholder + ' missing';
                 alert(txt);
                 return false;
             } else {
@@ -391,7 +415,7 @@
         function pictureValidation() {
             var txt = "";
             if (formElements[2].validity.valueMissing) {
-                txt = formElements[2].placeholder + ' missinig';
+                txt = formElements[2].placeholder + ' missing';
                 alert(txt);
                 return false;
             } else {
@@ -401,22 +425,22 @@
 
         console.log('indexTwo'+indexTwo);
         if(indexTwo === -1) {
-           if(nameValidation() && lastNameValidation() && pictureValidation()){
-               students.push({
-                   name: formElements[0].value,
-                   lastName: formElements[1].value,
-                   img: formElements[2].value,
-                   coverImg: null,
-                   email: formElements[3].value,
-                   skills: formElements[4].value
-               });
-               deleteBody();
-               renderBody();
-               console.log(students);
-               for (var j = 0; j < formElements.length-2; j++) {
-                   formElements[j].value = null;
-               }
-           }
+            if(nameValidation() && lastNameValidation() && pictureValidation()){
+                students.push({
+                    name: formElements[0].value,
+                    lastName: formElements[1].value,
+                    img: formElements[2].value,
+                    coverImg: null,
+                    email: formElements[3].value,
+                    skills: formElements[4].value
+                });
+                deleteBody();
+                renderBody();
+                console.log(students);
+                for (var j = 0; j < formElements.length-2; j++) {
+                    formElements[j].value = null;
+                }
+            }
 
         } else {
             nameValidation();
