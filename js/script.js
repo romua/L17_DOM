@@ -234,7 +234,16 @@
             // if (a[sortBy.toLowerCase()] < b[sortBy.toLowerCase()])
             //     return 1;
             // return 0;
-            var nameA=a[sortBy].toLowerCase(), nameB=b[sortBy].toLowerCase();
+            if(sortBy === 'LASTNAME'){
+                var nameA=a.lastName.toLowerCase(), nameB=b.lastName.toLowerCase();
+                if (nameA < nameB) //sort string ascending
+                    return -1;
+                if (nameA > nameB)
+                    return 1;
+                return 0; //default return value (no sorting)
+
+            }
+            var nameA=a[sortBy.toLowerCase()].toLowerCase(), nameB=b[sortBy.toLowerCase()].toLowerCase();
             if (nameA < nameB) //sort string ascending
                 return -1;
             if (nameA > nameB)
@@ -247,6 +256,8 @@
             students.sort(compare);
             console.log('this'+sortBy);
             console.log(students);
+            deleteBody();
+            renderBody();
         }
 
 
